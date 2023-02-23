@@ -66,9 +66,6 @@ for TEST in render/*.js; do
   emphasize "Intermediate test results for: ${TEST}"
   cat $RESULT_FILE
 
-#   emphasize "Generating intermediate Markdown for K6 tests..."
-#   python3 -m src.k6.scraper -r results -s summary -p persistent-results -c $CONFIG_FILE -k configs/kingdom.dict
-
   if [ $? -eq 137 ]; then
     emphasize "ERROR: TEST $TEST WAS OOMKILLED; IT WILL NOT PRODUCE ANY RESULTS."
     rm $RESULT_FILE
@@ -80,7 +77,12 @@ for TEST in render/*.js; do
   sleep 5
 done
 
-# emphasize "Generating final Markdown for K6 tests..."
-# python3 -m src.k6.scraper -r results -s summary -p persistent-results -c $CONFIG_FILE -k configs/kingdom.dict
+emphasize "Generating final Markdown for K6 tests..."
+python3 -m perf_test.scripts.scraper -r results -s summary -c $CONFIG_FILE -p /app/persistent-results
+# -k configs/kingdom.dict -p persistent-results 
+
 # emphasize "K6 TESTS ARE COMPLETE. Use the following command to copy to your CWD."
 # echo "kubectl cp ${POD_NAME}:output.md ./output.md && kubectl cp ${POD_NAME}:summary.json ./summary.json"
+
+# For debugging Add a sleep at the end of the job to give time to exec into pods if need be
+# sleep 120

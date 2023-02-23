@@ -13,10 +13,11 @@ Howitzer is a collection of Bash/Python scripts which can be used for automating
 ## How Howitzer works
 The core design principle beneath Howitzer lies in "exploding" K6 parameter iterables into a set of valid K6 test parameters, rendering each parameter combination into a Javascript object, and injecting the resulting object, along with other test information like the base URL being targeted, into a copy of a K6 template.
 
-When Howitzer is run, the bash script will create directories `render`, `results` and `summary`:
+When the bash script `perf_test/runHowitzer.sh` is run, the bash script will create directories `render`, `results` and `summary`:
 - `render` stores the "exploded" k6 tests using the k6 template specified in the test config for each k6_opts combination.
 - Then the script will run each individual k6 test in this `render` directory, storing the human readable results as text in `results` directory.
-- It will also store the corresponding json file of the result into `summary` directory that we can later use for MLFlow.
+- It will also store the corresponding json file of the result into `summary` directory.
+- The `perf_test.scripts.scraper` script then consolidates the results from the K6 test, the input test conditions etc. into a single `summary.json` file for the tests that were run.
 
 Example test config:
 ```json

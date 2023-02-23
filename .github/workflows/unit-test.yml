@@ -24,4 +24,4 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r perf_test/requirements.txt
       - name: Run k6 unit tests
-        run: python3 -m unittest unit_test/k6/test_renderer.py
+        run: python -m unittest discover unit_test/k6
